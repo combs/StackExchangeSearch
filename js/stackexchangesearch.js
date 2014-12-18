@@ -1,5 +1,5 @@
-var data_search = [];
-var data_answers = [];
+var $data_questions = [];
+var $data_answers = [];
 
 
 function begin() {
@@ -9,19 +9,39 @@ function begin() {
 	
 }
 
-function fetchSearch($query) {
+function fetchQuestions($query) {
 	var $url="http://api.stackexchange.com/2.2/search?order=desc&sort=activity&site=stackoverflow";
-	$("#alert_search_blank").hide();
+	
+	//	TK: add API key for more queries/day
 
-	//  TK: do this in the background
+	$("#alert_search_blank").hide();
 	 
-	$.getJSON($url, { intitle: $query } ).done(saveSearch);
+	$.getJSON($url, { intitle: $query } ).done(saveQuestions).fail(errorQuestions);
 	
 }
 
-function saveSearch($data) {
-	$data_search=$data;
-	alert("Got results");
+function saveQuestions(data) {
+	$data_questions=data.items;
+	displayQuestions();
+	
+}
+
+function displayQuestions() {
+	$("#table_questions").show().empty().html("<tr><th>Answered?</th><th>Question</th><th>Date</th></tr>");
+	$.each($data_questions, function(index) {
+		$date_this = new Date(parseInt($data_questions[index].creation_date));
+		$("#table_questions").append("<tr><td>" + 
+		($data_questions[index].is_answered ? "<strong class='icon-ok'> </strong>":"" ) + 
+		"</td><td>" + $data_questions[index].title + 
+		"</td><td>" + $date_this.toDateString() + "</td></tr>"); 
+	} ) ;
+	
+}
+
+function errorQuestions(data) {
+	
+	// 	TK: display error message in #alert_search_error
+	
 }
 
 
@@ -34,7 +54,7 @@ function formSearchSubmit() {
 	} else {
 		
 		
-		fetchSearch($query);	
+		fetchQuestions($query);	
 		
 		// TK: show status message
 		
