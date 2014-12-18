@@ -23,9 +23,9 @@ function fetchQuestions($query) {
 	
 	//	TK: add API key for more queries/day
 
-	$("#alert_search_blank").hide();
+	$("#alert_search").hide();
 	 
-	$.getJSON($url, { intitle: $query } ).done(saveQuestions).fail(errorQuestions);
+	$.getJSON($url, { intitle: $query } ).done(saveQuestions).fail(errorSearch);
 	
 }
 
@@ -66,6 +66,7 @@ function fetchAnswers($question) {
 		
 		
 	} else {
+		errorSearch("<strong>Sorry!</strong> No question provided for fetchAnswers.");
 	}
 	
 }
@@ -105,21 +106,25 @@ function displayAnswer($answer) {
 
 
 
+function errorSearch($message) {
+
+$("#alert_search").html($message).show();
+
+}
+
+
 function formSearchSubmit() {
 	var $query=$("#input_search_query").val();
 		
 	if ($query=="") {	
-		$("#alert_search_blank").show();
-		return false;
+
+		errorSearch("<strong>Sorry!</strong> Could you please enter a word or two? Then I can fetch answers for you.");
+
 	} else {
-		
-		
 		fetchQuestions($query);	
-		
+
 		// TK: show status message
-		
-		return false;
-		
+
 	}
 	
 	
