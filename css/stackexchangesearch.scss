@@ -1,0 +1,18 @@
+
+body {
+	background-color: #eee;
+}
+
+div.modal-results {
+	
+	z-index:1;
+	position: fixed;
+	top: 10vh;
+	left: 10vw;
+	background-color: white;
+	width: 70vw;
+	padding: 5vh 5vw;
+	height:70vh;
+	overflow: scroll;
+	
+}
